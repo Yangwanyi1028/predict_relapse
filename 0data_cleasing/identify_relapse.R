@@ -1,5 +1,5 @@
 rm(list = ls())  # 清空工作環境
-setwd("C:\\Users\\wanyiyang\\Downloads\\predict_relapse\\0data_cleasing")
+setwd("/Users/yangkeyi/Downloads/predict_relapse/0data_cleasing")
 
 library(readr)
 library(dplyr)
@@ -24,7 +24,7 @@ print("Column names after renaming:")
 print(colnames(data))
 write.csv(data, "IBD_Outcomes_CD_8May2025_withoutHKID1.csv", row.names = FALSE, quote = TRUE)
 rm(list = ls())  # 清空工作環境
-setwd("C:\\Users\\wanyiyang\\Downloads\\predict_relapse\\0data_cleasing")
+setwd("/Users/yangkeyi/Downloads/predict_relapse/0data_cleasing")
 
 library(readr)
 library(dplyr)

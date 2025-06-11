@@ -1,0 +1,12 @@
+python3 2metaphalan_data/find_samples_files.py
+
+# 合併 abundance 表格
+# longitude
+python3 2metaphalan_data/2merge_metaphlan_tables.py -l 2metaphalan_data/longtitude_sample_files.txt -o 2metaphalan_data/longitude_abundance_table.txt
+# IBDR
+python3 2metaphalan_data/2merge_metaphlan_tables.py -l 2metaphalan_data/IBDR_sample_files.txt -o 2metaphalan_data/IBDR_abundance_table.txt
+# ENIGMA
+python3 2metaphalan_data/2merge_metaphlan_tables.py -l 2metaphalan_data/ENIGMA_sample_files.txt -o 2metaphalan_data/ENIGMA_abundance_table.txt
+
+# 清理 abundance 表格
+python3 2metaphalan_data/3clean_abundance_table.py

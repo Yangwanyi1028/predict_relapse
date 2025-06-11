@@ -1,0 +1,9 @@
+parallel -j 1 --xapply \
+'cp /srv/raw_data/JIAYING/AUS/ALL-metaphlan4/{}_metaphlan   /srv/raw_data/JIAYING/AUS/ALL-metaphlan4/GTDB/ ' \
+        :::: /srv/raw_data/JIAYING/AUS/ALL-metaphlan4/GTDB/list479.txt
+        
+        
+parallel -j 1  --xapply 'sgb_to_gtdb_profile.py -i /srv/raw_data/JIAYING/AUS/ALL-metaphlan4/{}_metaphlan -d /home/jiayingzheng/anaconda3/envs/metaphlan4/lib/python3.7/site-packages/metaphlan/metaphlan_databases/mpa_vOct22_CHOCOPhlAnSGB_202212.pkl  -o /srv/raw_data/JIAYING/AUS/ALL-metaphlan4/GTDB/{}_GTDB.txt'   :::: /srv/raw_data/JIAYING/AUS/ALL-metaphlan4/GTDB/list479.txt
+
+
+merge_metaphlan_tables.py --gtdb_profiles  *_GTDB.txt > merged_abundance_table_gtdb479sample_2025.txt

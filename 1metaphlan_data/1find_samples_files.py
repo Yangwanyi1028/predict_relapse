@@ -71,11 +71,11 @@ for sample_id in sample_ids:
         print(f"Sample ID {sample_id} not found")
 
 # 将结果写入文件
-with open("1metaphlan_data/longtitude_sample_files.txt", "w") as f:
+with open("1metaphlan_data/longitude_sample_files.txt", "w") as f:
     for file_path in result_files:
         f.write(f"{file_path}\n")
 
-print(f"Found {len(result_files)} files, saved to metaphalan_data/longtitude_sample_files.txt")
+print(f"Found {len(result_files)} files, saved to metaphalan_data/longitude_sample_files.txt")
 
 
 

@@ -1,0 +1,14 @@
+最佳预处理方法: raw
+最佳AUC: 0.718
+
+前10个重要特征:
+  k__Bacteria|p__Proteobacteria: 0.0649
+  k__Bacteria|p__Firmicutes|c__Erysipelotrichia|o__Erysipelotrichales|f__Erysipelotrichaceae|g__Erysipelatoclostridium|s__Erysipelatoclostridium_ramosum: 0.0554
+  k__Bacteria|p__Proteobacteria|c__Gammaproteobacteria|o__Enterobacterales|f__Enterobacteriaceae|g__Escherichia|s__Escherichia_coli: 0.0552
+  k__Bacteria|p__Proteobacteria|c__Gammaproteobacteria|o__Enterobacterales: 0.0552
+  k__Bacteria|p__Proteobacteria|c__Gammaproteobacteria|o__Enterobacterales|f__Enterobacteriaceae|g__Escherichia: 0.0524
+  k__Bacteria|p__Proteobacteria|c__Gammaproteobacteria|o__Enterobacterales|f__Enterobacteriaceae: 0.0497
+  k__Bacteria|p__Bacteroidetes|c__Bacteroidia|o__Bacteroidales|f__Rikenellaceae|g__Alistipes|s__Alistipes_putredinis: 0.0410
+  k__Bacteria|p__Firmicutes|c__Bacilli|o__Lactobacillales|f__Streptococcaceae|g__Streptococcus|s__Streptococcus_vestibularis: 0.0379
+  k__Bacteria|p__Firmicutes|c__Clostridia|o__Clostridiales|f__Lachnospiraceae|g__Lachnospiraceae_unclassified|s__Eubacterium_rectale: 0.0372
+  k__Bacteria|p__Proteobacteria|c__Gammaproteobacteria: 0.0359

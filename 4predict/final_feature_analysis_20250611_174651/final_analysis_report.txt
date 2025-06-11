@@ -1,0 +1,34 @@
+微生物组特征减少分析最终报告
+============================================================
+
+1. 分析概述
+------------------------------
+原始特征数: 30
+最优特征数: 15
+特征减少比例: 0.0%
+最佳方法: Lasso_Selection_NN_Eval
+
+2. 性能指标
+------------------------------
+最优AUC: 0.8085 ± 0.0513
+
+3. 算法验证结果
+------------------------------
+Logistic Regression: 0.7850 ± 0.0787
+Random Forest: 0.7224 ± 0.0929
+Gradient Boosting: 0.7324 ± 0.0657
+SVM: 0.7528 ± 0.0955
+
+4. 特征重要性统计
+------------------------------
+Top 10 最稳定的重要特征:
+ 1. k__Bacteria|p__Proteobacteria: 重要性=0.0918, 稳定性=11.60
+ 2. k__Bacteria|p__Proteobacteria|c__Gammaproteobacteria|o__Enterobacterales|f__Enterobacteriaceae|g__Escherichia|s__Escherichia_coli: 重要性=0.0819, 稳定性=11.01
+ 3. k__Bacteria|p__Firmicutes|c__Erysipelotrichia|o__Erysipelotrichales|f__Erysipelotrichaceae|g__Erysipelatoclostridium|s__Erysipelatoclostridium_ramosum: 重要性=0.0799, 稳定性=8.11
+ 4. k__Bacteria|p__Firmicutes|c__Bacilli|o__Lactobacillales|f__Streptococcaceae|g__Streptococcus|s__Streptococcus_vestibularis: 重要性=0.0729, 稳定性=10.98
+ 5. k__Bacteria|p__Firmicutes|c__Negativicutes|o__Veillonellales|f__Veillonellaceae|g__Dialister|s__Dialister_pneumosintes: 重要性=0.0719, 稳定性=14.03
+ 6. k__Bacteria|p__Firmicutes|c__Negativicutes|o__Veillonellales|f__Veillonellaceae|g__Dialister|s__Dialister_invisus: 重要性=0.0712, 稳定性=9.98
+ 7. k__Bacteria|p__Firmicutes|c__Clostridia|o__Clostridiales|f__Lachnospiraceae|g__Blautia|s__Blautia_sp_CAG_257: 重要性=0.0695, 稳定性=8.77
+ 8. k__Bacteria|p__Proteobacteria|c__Gammaproteobacteria|o__Enterobacterales|f__Enterobacteriaceae|g__Citrobacter|s__Citrobacter_portucalensis: 重要性=0.0659, 稳定性=9.49
+ 9. k__Bacteria|p__Firmicutes|c__Clostridia|o__Clostridiales|f__Lachnospiraceae|g__Lachnospiraceae_unclassified|s__Eubacterium_rectale: 重要性=0.0659, 稳定性=10.85
+10. k__Bacteria|p__Firmicutes|c__Clostridia|o__Eubacteriales|f__Lachnospiraceae|g__Lachnoclostridium|s__Clostridium_scindens|t__SGB4631: 重要性=0.0633, 稳定性=18.17

@@ -261,11 +261,73 @@ class FeatureReductionAnalyzer:
                 auc = self._evaluate_random_forest(X_train, X_val, y_train, y_val)
             elif method == 'attention_network':
                 auc = self._evaluate_attention_network(X_train, X_val, y_train, y_val)
+            elif method == 'autoencoder_classifier':
+                auc = self._evaluate_autoencoder_classifier(X_train, X_val, y_train, y_val)
             
             auc_scores.append(auc)
     
         return auc_scores
     
+    def _create_autoencoder_model(self, input_dim, encoding_dim=64, dropout_rate=0.2):
+        """
+        创建自编码器+分类器模型
+        用于特征降维和分类的组合架构
+        """
+        # 编码器
+        input_layer = layers.Input(shape=(input_dim,))
+        # 编码部分
+        encoded = layers.Dense(512, activation='relu')(input_layer)
+        encoded = layers.BatchNormalization()(encoded)
+        encoded = layers.Dropout(dropout_rate)(encoded)
+        encoded = layers.Dense(256, activation='relu')(encoded)
+        encoded = layers.BatchNormalization()(encoded)
+        encoded = layers.Dropout(dropout_rate)(encoded)
+        encoded = layers.Dense(encoding_dim, activation='relu', name='encoding')(encoded)
+        # 解码部分
+        decoded = layers.Dense(256, activation='relu')(encoded)
+        decoded = layers.BatchNormalization()(decoded)
+        decoded = layers.Dropout(dropout_rate)(decoded)
+        decoded = layers.Dense(512, activation='relu')(decoded)
+        decoded = layers.BatchNormalization()(decoded)
+        decoded = layers.Dropout(dropout_rate)(decoded)
+        decoded = layers.Dense(input_dim, activation='linear', name='reconstruction')(decoded)
+        # 分类部分
+        classifier = layers.Dense(32, activation='relu')(encoded)
+        classifier = layers.BatchNormalization()(classifier)
+        classifier = layers.Dropout(dropout_rate)(classifier)
+        classifier = layers.Dense(16, activation='relu')(classifier)
+        classifier = layers.Dropout(dropout_rate)(classifier)
+        classification_output = layers.Dense(1, activation='sigmoid', name='classification')(classifier)
+        # 创建模型
+        model = keras.Model(inputs=input_layer,
+                            outputs=[classification_output, decoded])
+        return model
+    
+    def _create_attention_model(self, input_dim, dropout_rate=0.3):
+        """
+        创建带注意力机制的神经网络
+        用于识别重要的微生物特征
+        """
+        input_layer = layers.Input(shape=(input_dim,))
+        # 特征嵌入
+        embedded = layers.Dense(256, activation='relu')(input_layer)
+        embedded = layers.BatchNormalization()(embedded)
+        embedded = layers.Dropout(dropout_rate)(embedded)
+        # 注意力机制
+        attention_weights = layers.Dense(256, activation='tanh')(embedded)
+        attention_weights = layers.Dense(1, activation='softmax')(attention_weights)
+        # 应用注意力权重
+        attended_features = layers.Multiply()([embedded, attention_weights])
+        # 分类层
+        x = layers.Dense(128, activation='relu')(attended_features)
+        x = layers.BatchNormalization()(x)
+        x = layers.Dropout(dropout_rate)(x)
+        x = layers.Dense(64, activation='relu')(x)
+        x = layers.Dropout(dropout_rate)(x)
+        output = layers.Dense(1, activation='sigmoid')(x)
+        model = keras.Model(inputs=input_layer, outputs=output)
+        return model
+
     def _evaluate_attention_network(self, X_train, X_val, y_train, y_val):
         """
         使用带注意力机制的神经网络评估
@@ -275,22 +337,8 @@ class FeatureReductionAnalyzer:
         X_train_scaled = scaler.fit_transform(X_train)
         X_val_scaled = scaler.transform(X_val)
         
-        # 输入层
-        inputs = layers.Input(shape=(X_train_scaled.shape[1],))
-        
-        # 注意力机制
-        attention_probs = layers.Dense(X_train_scaled.shape[1], activation='softmax', name='attention_vec')(inputs)
-        attention_mul = layers.multiply([inputs, attention_probs], name='attention_mul')
-        
-        # 主干网络
-        dense_1 = layers.Dense(64, activation='relu')(attention_mul)
-        dropout_1 = layers.Dropout(0.3)(dense_1)
-        dense_2 = layers.Dense(32, activation='relu')(dropout_1)
-        dropout_2 = layers.Dropout(0.3)(dense_2)
-        outputs = layers.Dense(1, activation='sigmoid')(dropout_2)
-        
-        # 构建模型
-        model = keras.Model(inputs=inputs, outputs=outputs)
+        # 创建注意力模型
+        model = self._create_attention_model(X_train_scaled.shape[1])
         
         # 编译模型
         model.compile(
@@ -313,6 +361,66 @@ class FeatureReductionAnalyzer:
         
         # 预测和评估
         y_pred_proba = model.predict(X_val_scaled, verbose=0).flatten()
+        auc = roc_auc_score(y_val, y_pred_proba)
+        
+        # 清理内存
+        del model
+        tf.keras.backend.clear_session()
+        
+        return auc
+    
+    def _evaluate_autoencoder_classifier(self, X_train, X_val, y_train, y_val):
+        """
+        使用自编码器+分类器模型评估
+        """
+        # 数据标准化
+        scaler = StandardScaler()
+        X_train_scaled = scaler.fit_transform(X_train)
+        X_val_scaled = scaler.transform(X_val)
+        
+        # 创建自编码器模型
+        model = self._create_autoencoder_model(X_train_scaled.shape[1], encoding_dim=64)
+        
+        # 编译模型
+        model.compile(
+            optimizer=keras.optimizers.Adam(learning_rate=0.001),
+            loss={
+                'classification': 'binary_crossentropy',
+                'reconstruction': 'mse'
+            },
+            loss_weights={
+                'classification': 1.0,  # 分类损失权重
+                'reconstruction': 0.5   # 重建损失权重
+            },
+            metrics={
+                'classification': 'accuracy'
+            }
+        )
+        
+        # 训练
+        model.fit(
+            X_train_scaled,
+            {
+                'classification': y_train,
+                'reconstruction': X_train_scaled
+            },
+            epochs=50,
+            batch_size=min(32, len(X_train_scaled) // 4),
+            validation_data=(
+                X_val_scaled,
+                {
+                    'classification': y_val,
+                    'reconstruction': X_val_scaled
+                }
+            ),
+            callbacks=[
+                keras.callbacks.EarlyStopping(monitor='val_classification_loss', patience=10, restore_best_weights=True)
+            ],
+            verbose=0
+        )
+        
+        # 预测和评估 (只取分类输出)
+        y_pred_proba = model.predict(X_val_scaled, verbose=0)[0].flatten()
         auc = roc_auc_score(y_val, y_pred_proba)
         
         # 清理内存
@@ -602,6 +710,8 @@ def preprocess_microbiome_data(X):
     
     return X_clr
 
+
+
 def comprehensive_feature_reduction_analysis():
     """
     综合特征减少分析主函数
@@ -832,6 +942,8 @@ def comprehensive_feature_reduction_analysis():
         
         return best_X, y, best_result, all_results
 
+
+
 def advanced_feature_analysis(X, y, selected_features, result_dir):
     """
     对选定的特征进行高级分析
@@ -923,6 +1035,52 @@ def advanced_feature_analysis(X, y, selected_features, result_dir):
     
     return importance_stats
 
+def attention_network_cross_validation(X, y, cv=5, random_state=42):
+    """手动实现注意力网络的交叉验证"""
+    from sklearn.model_selection import StratifiedKFold
+    
+    skf = StratifiedKFold(n_splits=cv, shuffle=True, random_state=random_state)
+    scores = []
+    
+    for train_idx, test_idx in skf.split(X, y):
+        X_train, X_test = X.iloc[train_idx], X.iloc[test_idx]
+        y_train, y_test = y.iloc[train_idx], y.iloc[test_idx]
+        
+        # 清理TensorFlow会话
+        tf.keras.backend.clear_session()
+        
+        # 创建和训练模型
+        model = create_attention_model(X_train.shape[1])
+        model.compile(
+            optimizer=keras.optimizers.Adam(learning_rate=0.001),
+            loss='binary_crossentropy',
+            metrics=['accuracy']
+        )
+        
+        # 训练
+        model.fit(
+            X_train, y_train,
+            epochs=50,
+            batch_size=min(32, len(X_train) // 4),
+            validation_split=0.2,
+            callbacks=[
+                keras.callbacks.EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
+            ],
+            verbose=0
+        )
+        
+        # 预测和计算AUC
+        y_pred_proba = model.predict(X_test, verbose=0).flatten()
+        auc = roc_auc_score(y_test, y_pred_proba)
+        scores.append(auc)
+        
+        # 清理模型
+        del model
+    
+    return np.array(scores)
+
+
+
 def validate_optimal_features(X_optimal, y, result_dir):
     """
     验证最优特征集的性能
@@ -967,6 +1125,18 @@ def validate_optimal_features(X_optimal, y, result_dir):
         
         print(f"  AUC: {cv_scores.mean():.4f} ± {cv_scores.std():.4f}")
     
+    # 单独处理注意力网络
+    print(f"验证算法: Attention Network")
+    attention_scores = attention_network_cross_validation(X_scaled, y, cv=10, random_state=42)
+    
+    validation_results['Attention Network'] = {
+        'cv_auc_mean': attention_scores.mean(),
+        'cv_auc_std': attention_scores.std(),
+        'cv_scores': attention_scores
+    }
+    
+    print(f"  AUC: {attention_scores.mean():.4f} ± {attention_scores.std():.4f}")
+    
     # 绘制验证结果
     algorithms_names = list(validation_results.keys())
     mean_scores = [validation_results[alg]['cv_auc_mean'] for alg in algorithms_names]
@@ -974,7 +1144,7 @@ def validate_optimal_features(X_optimal, y, result_dir):
     
     plt.figure(figsize=(12, 8))
     bars = plt.bar(algorithms_names, mean_scores, yerr=std_scores, 
-                   capsize=5, alpha=0.8, color=['blue', 'green', 'red', 'orange'])
+                  capsize=5, alpha=0.8, color=['blue', 'green', 'red', 'orange', 'purple'])
     
     plt.ylabel('Cross-Validation AUC')
     plt.title('Performance Validation with Different Algorithms')
@@ -1005,6 +1175,8 @@ def validate_optimal_features(X_optimal, y, result_dir):
     
     print("性能验证完成")
     return validation_results
+
+
 
 def main():
     """
@@ -1070,6 +1242,9 @@ def main():
         traceback.print_exc()
         return None
 
+
 if __name__ == "__main__":
     # 运行完整分析
     result = main()
+
+

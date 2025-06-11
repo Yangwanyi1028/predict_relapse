@@ -1,0 +1,34 @@
+最佳特征减少方法总结
+==================================================
+
+方法名称: Lasso_Selection_NN_Eval
+特征选择算法: lasso
+评估算法: neural_network
+原始特征数: 105
+最优特征数: 20
+特征减少数量: 85
+减少比例: 81.0%
+最优AUC: 0.6628 ± 0.0242
+
+最优特征列表:
+------------------------------
+  1. Romboutsia_timonensis
+  2. Granulicatella_adiacens
+  3. Faecalibacterium_prausnitzii
+  4. Faecalimonas_umbilicata
+  5. GGB9719_SGB15272
+  6. Streptococcus_anginosus
+  7. Candidatus_Cibionibacter_quicibialis
+  8. Merdimonas_faecis
+  9. Bifidobacterium_adolescentis
+ 10. Phocaeicola_dorei
+ 11. Agathobaculum_butyriciproducens
+ 12. Haemophilus_parainfluenzae
+ 13. Parabacteroides_distasonis
+ 14. Lactobacillus_gasseri
+ 15. Eubacterium_rectale
+ 16. Roseburia_faecis
+ 17. Gemella_morbillorum
+ 18. Blautia_massiliensis
+ 19. Flavonifractor_plautii
+ 20. Escherichia_coli

@@ -152,6 +152,7 @@ class MicrobiomeNeuralNetwork:
         
         return model
 
+
 def create_results_directory():
     """创建保存结果的目录"""
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')

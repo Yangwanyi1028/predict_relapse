@@ -1,0 +1,25 @@
+注意力模型分析总结
+==================================================
+
+使用特征数量: 55
+交叉验证折数: 5
+平均AUC: 0.7238 ± 0.0692
+
+每折AUC:
+  折 1: 0.6059
+  折 2: 0.6914
+  折 3: 0.7756
+  折 4: 0.8000
+  折 5: 0.7458
+
+Top 10 注意力权重最高的特征:
+  1. k__Bacteria|p__Firmicutes|c__Negativicutes|o__Veillonellales|f__Veillonellaceae|g__Dialister|s__Dialister_pneumosintes: 0.0321 ± 0.0125
+  2. k__Bacteria|p__Firmicutes|c__CFGB2982|o__OFGB2982|f__FGB2982|g__GGB9342|s__GGB9342_SGB14306: 0.0295 ± 0.0288
+  3. k__Bacteria|p__Firmicutes|c__CFGB9583|o__OFGB9583|f__FGB9583|g__GGB3490|s__GGB3490_SGB4664|t__SGB4664: 0.0280 ± 0.0123
+  4. k__Bacteria|p__Firmicutes|c__Clostridia|o__Clostridiales|f__Lachnospiraceae|g__Lachnospiraceae_unclassified|s__Eubacterium_rectale: 0.0264 ± 0.0125
+  5. k__Bacteria|p__Firmicutes|c__CFGB9583: 0.0264 ± 0.0190
+  6. k__Bacteria|p__Firmicutes|c__Clostridia|o__Clostridiales|f__Lachnospiraceae|g__Blautia|s__Blautia_sp_CAG_257: 0.0249 ± 0.0089
+  7. k__Bacteria|p__Firmicutes|c__Bacilli|o__Lactobacillales|f__Lactobacillaceae|g__Lactobacillus|s__Lactobacillus_farciminis: 0.0245 ± 0.0108
+  8. k__Bacteria|p__Firmicutes|c__Bacilli|o__Lactobacillales|f__Streptococcaceae|g__Streptococcus|s__Streptococcus_vestibularis|t__SGB8003: 0.0238 ± 0.0071
+  9. k__Bacteria|p__Firmicutes|c__CFGB2982|o__OFGB2982: 0.0224 ± 0.0095
+  10. k__Bacteria|p__Proteobacteria: 0.0223 ± 0.0112

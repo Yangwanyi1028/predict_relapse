@@ -1,0 +1,35 @@
+微生物组特征减少分析最终报告
+============================================================
+
+1. 分析概述
+------------------------------
+原始特征数: 40
+最优特征数: 20
+特征减少比例: 0.0%
+最佳方法: Lasso_Selection_NN_Eval
+
+2. 性能指标
+------------------------------
+最优AUC: 0.8111 ± 0.0292
+
+3. 算法验证结果
+------------------------------
+Logistic Regression: 0.7806 ± 0.0751
+Random Forest: 0.7009 ± 0.0523
+Gradient Boosting: 0.7607 ± 0.0558
+SVM: 0.7509 ± 0.0617
+Attention Network: 0.7422 ± 0.0818
+
+4. 特征重要性统计
+------------------------------
+Top 10 最稳定的重要特征:
+ 1. k__Bacteria|p__Firmicutes|c__Erysipelotrichia|o__Erysipelotrichales|f__Erysipelotrichaceae|g__Erysipelatoclostridium|s__Erysipelatoclostridium_ramosum: 重要性=0.0802, 稳定性=8.13
+ 2. k__Bacteria|p__Firmicutes|c__Clostridia|o__Clostridiales|f__Lachnospiraceae|g__Blautia|s__Blautia_sp_CAG_257: 重要性=0.0772, 稳定性=14.06
+ 3. k__Bacteria|p__Firmicutes|c__Negativicutes|o__Veillonellales|f__Veillonellaceae|g__Dialister|s__Dialister_invisus: 重要性=0.0728, 稳定性=6.25
+ 4. k__Bacteria|p__Firmicutes|c__Clostridia|o__Eubacteriales|f__Lachnospiraceae|g__Lachnoclostridium|s__Clostridium_scindens|t__SGB4631: 重要性=0.0642, 稳定性=9.17
+ 5. k__Bacteria|p__Firmicutes|c__Erysipelotrichia|o__Erysipelotrichales|f__Erysipelotrichaceae|g__Faecalicoccus|s__Faecalicoccus_pleomorphus: 重要性=0.0610, 稳定性=9.85
+ 6. k__Bacteria|p__Proteobacteria|c__Gammaproteobacteria|o__Enterobacterales|f__Enterobacteriaceae|g__Citrobacter|s__Citrobacter_portucalensis: 重要性=0.0603, 稳定性=8.57
+ 7. k__Bacteria|p__Proteobacteria|c__Gammaproteobacteria|o__Enterobacterales|f__Enterobacteriaceae|g__Escherichia|s__Escherichia_coli: 重要性=0.0598, 稳定性=11.02
+ 8. k__Bacteria|p__Firmicutes|c__Bacilli|o__Lactobacillales|f__Streptococcaceae|g__Streptococcus|s__Streptococcus_vestibularis: 重要性=0.0524, 稳定性=12.00
+ 9. k__Bacteria|p__Firmicutes|c__Negativicutes|o__Veillonellales|f__Veillonellaceae|g__Dialister|s__Dialister_pneumosintes: 重要性=0.0515, 稳定性=9.24
+10. k__Bacteria|p__Firmicutes|c__Clostridia|o__Clostridiales|f__Lachnospiraceae|g__Lachnospiraceae_unclassified|s__Eubacterium_rectale: 重要性=0.0499, 稳定性=11.41

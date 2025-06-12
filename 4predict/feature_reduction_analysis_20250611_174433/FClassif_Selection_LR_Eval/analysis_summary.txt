@@ -1,7 +1,0 @@
-Feature Reduction Analysis Summary
-==================================================
-
-Optimal number of features: 20
-Optimal AUC: 0.7850 ± 0.0512
-Total features tested: 10
-Feature reduction ratio: 100.0%

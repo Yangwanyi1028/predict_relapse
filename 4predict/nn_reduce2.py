@@ -40,7 +40,7 @@ class FeatureReductionAnalyzer:
                                     selection_method='random_forest',
                                     evaluation_method='neural_network',
                                     cv_folds=5,
-                                    auc_drop_threshold=0.02):
+                                    auc_drop_threshold=0.1):
         """
         渐进式特征减少分析
         
@@ -83,10 +83,13 @@ class FeatureReductionAnalyzer:
                 feature_ranges.extend(list(range(100, 20, -10)))
                 feature_ranges.extend(list(range(20, 5, -2)))
             elif max_features > 100:
-                feature_ranges.extend(list(range(max_features, 20, -10)))
+                feature_ranges.extend(list(range(max_features, 30, -10)))
                 feature_ranges.extend(list(range(20, 5, -2)))
+            elif max_features > 10:
+                feature_ranges.extend(list(range(max_features, 20, -1)))
+                feature_ranges.extend(list(range(20, 1, -1)))
             else:
-                feature_ranges.extend(list(range(max_features, 5, -5)))
+                feature_ranges.extend(list(range(max_features, 2, -2)))
             
             feature_ranges = sorted(list(set(feature_ranges)), reverse=True)
         
@@ -567,7 +570,7 @@ class FeatureReductionAnalyzer:
         
         if result_dir:
             plt.savefig(f"{result_dir}/feature_reduction_curve.png", dpi=300, bbox_inches='tight')
-        plt.show()
+        # plt.show()
     
     def plot_feature_importance(self, top_n=20, result_dir=None):
         """
@@ -603,7 +606,7 @@ class FeatureReductionAnalyzer:
         
         if result_dir:
             plt.savefig(f"{result_dir}/optimal_feature_importance.png", dpi=300, bbox_inches='tight')
-        plt.show()
+        # plt.show()
     
     def save_results(self, result_dir):
         """
@@ -642,7 +645,7 @@ def load_and_match_data():
     print("加载数据...")
     
     # 加载特征数据 (微生物丰度矩阵)
-    features_df = pd.read_csv('lefse_diff_abundance_matrix.csv', index_col=0)
+    features_df = pd.read_csv('lefse_diff_abundance_matrix_sp_only1.csv', index_col=0)
     print(f"原始特征数据形状: {features_df.shape}")
     
     # 加载标签数据
@@ -736,15 +739,55 @@ def comprehensive_feature_reduction_analysis():
     # 4. 运行多种方法的特征减少分析
     # 在comprehensive_feature_reduction_analysis函数中，修改methods_config列表
     methods_config = [
+        # 1. Random Forest 特征选择的所有组合
         {
             'selection_method': 'random_forest',
             'evaluation_method': 'neural_network',
             'name': 'RF_Selection_NN_Eval'
         },
         {
+            'selection_method': 'random_forest',
+            'evaluation_method': 'logistic_regression',
+            'name': 'RF_Selection_LR_Eval'
+        },
+        {
+            'selection_method': 'random_forest',
+            'evaluation_method': 'random_forest',
+            'name': 'RF_Selection_RF_Eval'
+        },
+        {
+            'selection_method': 'random_forest', 
+            'evaluation_method': 'attention_network',
+            'name': 'RF_Selection_Attention_Eval'
+        },
+        
+        # 2. Lasso 特征选择的所有组合
+        {
             'selection_method': 'lasso',
             'evaluation_method': 'neural_network', 
             'name': 'Lasso_Selection_NN_Eval'
+        },
+        {
+            'selection_method': 'lasso',
+            'evaluation_method': 'logistic_regression',
+            'name': 'Lasso_Selection_LR_Eval'
+        },
+        {
+            'selection_method': 'lasso',
+            'evaluation_method': 'random_forest',
+            'name': 'Lasso_Selection_RF_Eval'
+        },
+        {
+            'selection_method': 'lasso',
+            'evaluation_method': 'attention_network',
+            'name': 'Lasso_Selection_Attention_Eval'
+        },
+        
+        # 3. F-classif 特征选择的所有组合
+        {
+            'selection_method': 'f_classif',
+            'evaluation_method': 'neural_network',
+            'name': 'FClassif_Selection_NN_Eval'
         },
         {
             'selection_method': 'f_classif',
@@ -752,15 +795,36 @@ def comprehensive_feature_reduction_analysis():
             'name': 'FClassif_Selection_LR_Eval'
         },
         {
+            'selection_method': 'f_classif',
+            'evaluation_method': 'random_forest',
+            'name': 'FClassif_Selection_RF_Eval'
+        },
+        {
+            'selection_method': 'f_classif',
+            'evaluation_method': 'attention_network',
+            'name': 'FClassif_Selection_Attention_Eval'
+        },
+        
+        # 4. Mutual Info 特征选择的所有组合
+        {
+            'selection_method': 'mutual_info',
+            'evaluation_method': 'neural_network',
+            'name': 'MutualInfo_Selection_NN_Eval'
+        },
+        {
+            'selection_method': 'mutual_info',
+            'evaluation_method': 'logistic_regression',
+            'name': 'MutualInfo_Selection_LR_Eval'
+        },
+        {
             'selection_method': 'mutual_info',
             'evaluation_method': 'random_forest',
             'name': 'MutualInfo_Selection_RF_Eval'
         },
-        # 添加新的配置使用注意力模型
         {
-            'selection_method': 'random_forest', 
+            'selection_method': 'mutual_info',
             'evaluation_method': 'attention_network',
-            'name': 'RF_Selection_Attention_Eval'
+            'name': 'MutualInfo_Selection_Attention_Eval'
         }
     ]
     
@@ -783,7 +847,7 @@ def comprehensive_feature_reduction_analysis():
                 selection_method=config['selection_method'],
                 evaluation_method=config['evaluation_method'],
                 cv_folds=5,
-                auc_drop_threshold=0.015  # 1.5%的AUC下降阈值
+                auc_drop_threshold=0.1  # 1.5%的AUC下降阈值
             )
             
             # 保存结果
@@ -872,7 +936,7 @@ def comprehensive_feature_reduction_analysis():
         
         plt.tight_layout()
         plt.savefig(f"{result_dir}/methods_comparison.png", dpi=300, bbox_inches='tight')
-        plt.show()
+        # plt.show()
         
         # 绘制所有方法的性能曲线对比
         plt.figure(figsize=(15, 10))
@@ -905,7 +969,7 @@ def comprehensive_feature_reduction_analysis():
         plt.grid(True, alpha=0.3)
         plt.tight_layout()
         plt.savefig(f"{result_dir}/all_methods_curves.png", dpi=300, bbox_inches='tight')
-        plt.show()
+        # plt.show()
         
         # 推荐最佳方法
         best_method = comparison_df.iloc[0]
@@ -960,7 +1024,7 @@ def advanced_feature_analysis(X, y, selected_features, result_dir):
     plt.title('Feature Correlation Matrix (Selected Features)')
     plt.tight_layout()
     plt.savefig(f"{result_dir}/feature_correlation_matrix.png", dpi=300, bbox_inches='tight')
-    plt.show()
+    # plt.show()
     
     # 2. 特征分布分析
     n_features_to_plot = min(12, len(selected_features))
@@ -985,7 +1049,7 @@ def advanced_feature_analysis(X, y, selected_features, result_dir):
     plt.suptitle('Feature Distributions by Class', fontsize=14)
     plt.tight_layout()
     plt.savefig(f"{result_dir}/feature_distributions.png", dpi=300, bbox_inches='tight')
-    plt.show()
+    # plt.show()
     
     # 3. 特征重要性稳定性分析
     print("分析特征重要性稳定性...")
@@ -1026,7 +1090,7 @@ def advanced_feature_analysis(X, y, selected_features, result_dir):
     plt.grid(True, alpha=0.3)
     plt.tight_layout()
     plt.savefig(f"{result_dir}/feature_importance_stability.png", dpi=300, bbox_inches='tight')
-    plt.show()
+    # plt.show()
     
     # 保存重要性统计
     importance_stats.to_csv(f"{result_dir}/feature_importance_statistics.csv")
@@ -1034,6 +1098,30 @@ def advanced_feature_analysis(X, y, selected_features, result_dir):
     print("高级特征分析完成")
     
     return importance_stats
+
+
+def create_attention_model(input_dim, dropout_rate=0.3):
+    """创建带注意力机制的神经网络"""
+    input_layer = layers.Input(shape=(input_dim,))
+    # 特征嵌入
+    embedded = layers.Dense(256, activation='relu')(input_layer)
+    embedded = layers.BatchNormalization()(embedded)
+    embedded = layers.Dropout(dropout_rate)(embedded)
+    # 注意力机制
+    attention_weights = layers.Dense(256, activation='tanh')(embedded)
+    attention_weights = layers.Dense(1, activation='softmax')(attention_weights)
+    # 应用注意力权重
+    attended_features = layers.Multiply()([embedded, attention_weights])
+    # 分类层
+    x = layers.Dense(128, activation='relu')(attended_features)
+    x = layers.BatchNormalization()(x)
+    x = layers.Dropout(dropout_rate)(x)
+    x = layers.Dense(64, activation='relu')(x)
+    x = layers.Dropout(dropout_rate)(x)
+    output = layers.Dense(1, activation='sigmoid')(x)
+    model = keras.Model(inputs=input_layer, outputs=output)
+    return model
+
 
 def attention_network_cross_validation(X, y, cv=5, random_state=42):
     """手动实现注意力网络的交叉验证"""
@@ -1160,7 +1248,7 @@ def validate_optimal_features(X_optimal, y, result_dir):
     
     plt.tight_layout()
     plt.savefig(f"{result_dir}/validation_results.png", dpi=300, bbox_inches='tight')
-    plt.show()
+    # plt.show()
     
     # 保存验证结果
     validation_df = pd.DataFrame({

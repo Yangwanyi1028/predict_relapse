@@ -1,0 +1,35 @@
+微生物组特征减少分析最终报告
+============================================================
+
+1. 分析概述
+------------------------------
+原始特征数: 70
+最优特征数: 35
+特征减少比例: 0.0%
+最佳方法: FClassif_Selection_NN_Eval
+
+2. 性能指标
+------------------------------
+最优AUC: 0.8023 ± 0.0302
+
+3. 算法验证结果
+------------------------------
+Logistic Regression: 0.7434 ± 0.1061
+Random Forest: 0.6912 ± 0.0742
+Gradient Boosting: 0.7050 ± 0.1020
+SVM: 0.7378 ± 0.0997
+Attention Network: 0.7487 ± 0.1112
+
+4. 特征重要性统计
+------------------------------
+Top 10 最稳定的重要特征:
+ 1. k__Bacteria|p__Proteobacteria: 重要性=0.0447, 稳定性=9.59
+ 2. k__Bacteria|p__Firmicutes|c__Negativicutes|o__Veillonellales|f__Veillonellaceae|g__Dialister|s__Dialister_invisus: 重要性=0.0439, 稳定性=15.90
+ 3. k__Bacteria|p__Firmicutes|c__Erysipelotrichia|o__Erysipelotrichales|f__Erysipelotrichaceae|g__Erysipelatoclostridium|s__Erysipelatoclostridium_ramosum: 重要性=0.0421, 稳定性=9.44
+ 4. k__Bacteria|p__Firmicutes|c__Clostridia|o__Clostridiales|f__Lachnospiraceae|g__Blautia|s__Blautia_sp_CAG_257: 重要性=0.0396, 稳定性=6.42
+ 5. k__Bacteria|p__Firmicutes|c__Negativicutes|o__Veillonellales|f__Veillonellaceae|g__Dialister|s__Dialister_pneumosintes: 重要性=0.0391, 稳定性=6.18
+ 6. k__Bacteria|p__Firmicutes|c__Bacilli|o__Lactobacillales|f__Streptococcaceae|g__Streptococcus|s__Streptococcus_vestibularis: 重要性=0.0378, 稳定性=8.09
+ 7. k__Bacteria|p__Firmicutes|c__Clostridia|o__Eubacteriales|f__Lachnospiraceae|g__Lachnoclostridium|s__Clostridium_scindens|t__SGB4631: 重要性=0.0368, 稳定性=7.11
+ 8. k__Bacteria|p__Proteobacteria|c__Gammaproteobacteria|o__Enterobacterales: 重要性=0.0361, 稳定性=10.58
+ 9. k__Bacteria|p__Proteobacteria|c__Gammaproteobacteria|o__Enterobacterales|f__Enterobacteriaceae|g__Citrobacter|s__Citrobacter_portucalensis: 重要性=0.0352, 稳定性=8.57
+10. k__Bacteria|p__Proteobacteria|c__Gammaproteobacteria|o__Enterobacterales|f__Enterobacteriaceae: 重要性=0.0345, 稳定性=8.03

@@ -1,0 +1,35 @@
+微生物组特征减少分析最终报告
+============================================================
+
+1. 分析概述
+------------------------------
+原始特征数: 24
+最优特征数: 12
+特征减少比例: 0.0%
+最佳方法: RF_Selection_NN_Eval
+
+2. 性能指标
+------------------------------
+最优AUC: 0.8131 ± 0.0511
+
+3. 算法验证结果
+------------------------------
+Logistic Regression: 0.7841 ± 0.1024
+Random Forest: 0.7194 ± 0.0965
+Gradient Boosting: 0.7343 ± 0.0969
+SVM: 0.7555 ± 0.1062
+Attention Network: 0.7430 ± 0.1363
+
+4. 特征重要性统计
+------------------------------
+Top 10 最稳定的重要特征:
+ 1. k__Bacteria|p__Firmicutes|c__Clostridia|o__Clostridiales|f__Lachnospiraceae|g__Blautia|s__Blautia_sp_CAG_257: 重要性=0.1121, 稳定性=15.90
+ 2. k__Bacteria|p__Firmicutes|c__Erysipelotrichia|o__Erysipelotrichales|f__Erysipelotrichaceae|g__Erysipelatoclostridium|s__Erysipelatoclostridium_ramosum: 重要性=0.1032, 稳定性=12.98
+ 3. k__Bacteria|p__Firmicutes|c__Negativicutes|o__Veillonellales|f__Veillonellaceae|g__Dialister|s__Dialister_invisus: 重要性=0.0944, 稳定性=18.04
+ 4. k__Bacteria|p__Firmicutes|c__Clostridia|o__Eubacteriales|f__Lachnospiraceae|g__Lachnoclostridium|s__Clostridium_scindens|t__SGB4631: 重要性=0.0871, 稳定性=9.91
+ 5. k__Bacteria|p__Proteobacteria|c__Gammaproteobacteria|o__Enterobacterales|f__Enterobacteriaceae|g__Citrobacter|s__Citrobacter_portucalensis: 重要性=0.0855, 稳定性=14.01
+ 6. k__Bacteria|p__Firmicutes|c__Bacilli|o__Lactobacillales|f__Streptococcaceae|g__Streptococcus|s__Streptococcus_vestibularis: 重要性=0.0809, 稳定性=15.21
+ 7. k__Bacteria|p__Firmicutes|c__Negativicutes|o__Veillonellales|f__Veillonellaceae|g__Dialister|s__Dialister_pneumosintes: 重要性=0.0785, 稳定性=7.59
+ 8. k__Bacteria|p__Proteobacteria|c__Gammaproteobacteria|o__Enterobacterales|f__Enterobacteriaceae|g__Escherichia|s__Escherichia_coli: 重要性=0.0772, 稳定性=14.23
+ 9. k__Bacteria|p__Firmicutes|c__Clostridia|o__Clostridiales|f__Lachnospiraceae|g__Lachnospiraceae_unclassified|s__Eubacterium_rectale: 重要性=0.0738, 稳定性=11.41
+10. k__Bacteria|p__Firmicutes|c__Erysipelotrichia|o__Erysipelotrichales|f__Erysipelotrichaceae|g__Faecalicoccus|s__Faecalicoccus_pleomorphus: 重要性=0.0714, 稳定性=15.44

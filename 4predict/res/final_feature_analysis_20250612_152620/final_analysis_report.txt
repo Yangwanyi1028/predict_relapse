@@ -1,0 +1,35 @@
+微生物组特征减少分析最终报告
+============================================================
+
+1. 分析概述
+------------------------------
+原始特征数: 24
+最优特征数: 12
+特征减少比例: 0.0%
+最佳方法: Lasso_Selection_NN_Eval
+
+2. 性能指标
+------------------------------
+最优AUC: 0.7960 ± 0.0365
+
+3. 算法验证结果
+------------------------------
+Logistic Regression: 0.7566 ± 0.0726
+Random Forest: 0.7059 ± 0.0757
+Gradient Boosting: 0.7174 ± 0.1082
+SVM: 0.7404 ± 0.0874
+Attention Network: 0.7795 ± 0.0708
+
+4. 特征重要性统计
+------------------------------
+Top 10 最稳定的重要特征:
+ 1. Erysipelatoclostridium_ramosum: 重要性=0.1148, 稳定性=17.75
+ 2. Blautia_sp_CAG_257: 重要性=0.1147, 稳定性=18.73
+ 3. Dialister_invisus: 重要性=0.1022, 稳定性=11.91
+ 4. Citrobacter_portucalensis: 重要性=0.0874, 稳定性=15.27
+ 5. Escherichia_coli: 重要性=0.0824, 稳定性=11.42
+ 6. Dialister_pneumosintes: 重要性=0.0795, 稳定性=15.86
+ 7. Clostridium_scindens: 重要性=0.0761, 稳定性=13.73
+ 8. Streptococcus_vestibularis: 重要性=0.0737, 稳定性=10.78
+ 9. Ruminococcus_bicirculans: 重要性=0.0735, 稳定性=15.25
+10. Lactobacillus_farciminis: 重要性=0.0681, 稳定性=15.88
